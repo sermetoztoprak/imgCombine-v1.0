@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Cropper.js</title>
+    <link rel="stylesheet" href="~/css/cropper.css">
+    <style>
+        thead {
+            color: green;
+        }
+
+        tbody {
+            color: blue;
+        }
+
+        tfoot {
+            color: red;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            width: 100px;
+            height: 100px;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 640px;
+        }
+
+        img {
+            max-width: 100%;
+        }
+        /*canvas{
+            width:500px;
+            height:500px;
+        }*/
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h3>Image</h3>
+        <div>
+            <div id="TheDiv"></div>
+            @*<img id="image" src="https://dfcdn.defacto.com.tr/7/K9063AZ_20SP_NM39_01_02.jpg" alt="Picture">*@
+            <input type="text" id="txtAd" value="">
+            <button id="uyari">Getir</button>
+        </div>
+        @*<p>Data: <span id="data"></span></p>
+            <p>Crop Box Data: <span id="cropBoxData"></span></p>*@
+        <h3>Result</h3>
+        <p>
+            <button type="button" id="Top">Top</button>
+            <button type="button" id="Bottom">Bottom</button>
+            <button type="button" id="Shoe">Shoe</button>
+        </p>
+        <table>
+
+            <tbody>
+                <tr>
+                    <td id="topDiv"></td>
+                </tr>
+                <tr>
+                    <td><div id="bottomDiv"></div><br /></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><div id="shoeDiv"></div><br /></td>
+                </tr>
+            </tfoot>
+        </table>
+
+
+        <div id="shoeDiv"></div><br />
+    </div>
+    <script src="~/js/cropper.js"></script>
+    <script>
+        var body = { top: "", bottom: "", shoe: "" };
+        var btn = document.getElementById("uyari");
+
+        btn.onclick = function () {
+
+            var ad = document.getElementById("txtAd");
+            var data = document.querySelector('#data');
+            var cropBoxData = document.querySelector('#cropBoxData');
+            var Top = document.getElementById('Top');
+            var Bottom = document.getElementById('Bottom');
+            var Shoe = document.getElementById('Shoe');
+            var result = document.getElementById('topDiv');
+            var result1 = document.getElementById('bottomDiv');
+            var result2 = document.getElementById('shoeDiv');
+            var image = document.createElement("IMG");
+            image.alt = "Alt information for image";
+            image.setAttribute('class', 'photo');
+            image.src = ad.value;
+            $('#TheDiv').html(image);
+            debugger;
+            var cropper = new Cropper(image, {
+                viewMode: 3,
+                //ready: function (event) {
+                //    // Zoom the image to its natural size
+                //    cropper.zoomTo(0.6);
+                //},
+
+                //crop: function (event) {
+                //    data.textContent = JSON.stringify(cropper.getData());
+                //    cropBoxData.textContent = JSON.stringify(cropper.getCropBoxData());
+                //},
+
+                zoom: function (event) {
+                    // Keep the image in its natural size
+                    if (event.detail.oldRatio === 0.5) {
+                        event.preventDefault();
+                    }
+                },
+            });
+
+            Top.onclick = function () {
+
+                body.top = cropper.getCroppedCanvas({
+                    width: 160,
+                    height: 90,
+                    minWidth: 256,
+                    minHeight: 256,
+                    maxWidth: 4096,
+                    maxHeight: 4096,
+                    fillColor: '#fff',
+                    imageSmoothingEnabled: false,
+                    imageSmoothingQuality: 'high',
+                });
+                result.innerHTML = '';
+                result.appendChild(body.top);
+
+
+            }
+            Bottom.onclick = function () {
+                body.bottom = cropper.getCroppedCanvas({
+                    width: 160,
+                    height: 90,
+                    minWidth: 256,
+                    minHeight: 256,
+                    maxWidth: 4096,
+                    maxHeight: 4096,
+                    fillColor: '#fff',
+                    imageSmoothingEnabled: false,
+                    imageSmoothingQuality: 'high',
+                });
+                result1.innerHTML = '';
+                result1.appendChild(body.bottom);
+
+            }
+            Shoe.onclick = function () {
+                body.shoe = cropper.getCroppedCanvas({
+                    width: 160,
+                    height: 90,
+                    minWidth: 256,
+                    minHeight: 256,
+                    maxWidth: 4096,
+                    maxHeight: 4096,
+                    fillColor: '#fff',
+                    imageSmoothingEnabled: false,
+                    imageSmoothingQuality: 'high',
+                });
+                result2.innerHTML = '';
+                result2.appendChild(body.shoe);
+            }
+
+
+
+        };
+
+    </script>
+</body>
+</html>
